@@ -1,0 +1,36 @@
+service: home-chef-api-v1
+
+custom:
+  secrets: ${file(./config/dev/vars.yml)}
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  timeout: 30
+  stage: ${self:custom.secrets.env}
+  version: ${opt:version, 'v1'}
+  environment:
+    NODE_ENV: ${self:custom.secrets.env}
+    DB_NAME: ${self:custom.secrets.parameters.db_name}
+    DB_USERNAME: ${ssm:/home-chef/dev/db-username}
+    DB_PASSWORD: ${ssm:/home-chef/dev/db-password}
+    DB_HOST: ${self:custom.secrets.parameters.db_host}
+
+  vpc:
+    securityGroupIds:
+      - ${self:custom.secrets.vpc.vpc_id}
+    subnetIds:
+      - ${self:custom.secrets.vpc.private_1_id}
+      - ${self:custom.secrets.vpc.private_2_id}
+
+functions:
+  users:
+    handler: handlers/${self:provider.version}/index.listUsers
+    events:
+      - http:
+          path: /${self:provider.version}/users
+          method: get
+          cors: true
+
+plugins:
+  - serverless-offline

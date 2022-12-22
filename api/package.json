@@ -1,0 +1,29 @@
+{
+  "name": "home-chef-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handlers/handler.js",
+  "scripts": {
+    "start": "serverless offline start",
+    "deploy-dev-v1": "serverless deploy --stage dev --version v1",
+    "deploy-qa-v1": "serverless deploy --stage qa --version v1",
+    "deploy-stage-v1": "serverless deploy --stage stage --version v1",
+    "deploy-prod-v1": "serverless deploy --stage prod --version v1"
+  },
+  "keywords": [],
+  "author": "Adnan Rahić",
+  "license": "MIT",
+  "devDependencies": {
+    "sequelize-cli": "^6.5.2",
+    "serverless-offline": "^6.8.0",
+    "serverless-sequelize-migrations": "^1.1.1"
+  },
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "js-yaml": "^4.1.0",
+    "mysql2": "^1.7.0",
+    "os": "^0.1.2",
+    "sequelize": "^6.5.0",
+    "serverless-mysql": "^1.5.4"
+  }
+}

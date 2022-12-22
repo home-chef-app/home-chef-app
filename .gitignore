@@ -1,0 +1,12 @@
+**/node_modules
+
+
+# Serverless directories
+api/.serverless
+
+
+.vscode
+
+infrastructure/.terraform
+infrastructure/.terraform.lock.hcl
+infrastructure/modules/common/gen/*
