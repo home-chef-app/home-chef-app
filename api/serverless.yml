@@ -24,12 +24,19 @@ provider:
       - ${self:custom.secrets.vpc.private_2_id}
 
 functions:
-  users:
+  listUsers:
     handler: handlers/${self:provider.version}/index.listUsers
     events:
       - http:
           path: /${self:provider.version}/users
           method: get
+          cors: true
+  createUser:
+    handler: handlers/${self:provider.version}/index.createUser
+    events:
+      - http:
+          path: /${self:provider.version}/users
+          method: post
           cors: true
 
 plugins:

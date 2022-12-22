@@ -1,6 +1,9 @@
 const sequelize = require("../../../models/database").sequelize;
 const Sequelize = require("sequelize");
-const { responseHandler, errorHandler } = require("../../../helpers/httpHelper");
+const {
+  responseHandler,
+  errorHandler,
+} = require("../../../helpers/httpHelper");
 
 const Users = require("../../../models/user")(sequelize, Sequelize);
 Users.sync();
@@ -20,17 +23,18 @@ module.exports = {
 
   // POST /books
   async create(e, ctx, cb) {
-    console.log("E", e);
-    cb(null, responseHandler(200, "test"));
-    // try {
-    //   const book = await Book.create({
-    //     title,
-    //     description,
-    //   });
+    const { first_name, last_name, email } = JSON.parse(e.body);
 
-    //   cb(null, responseHandler(200, book));
-    // } catch (error) {
-    //   cb(null, errorHandler(400, error));
-    // }
+    try {
+      const user = await Users.create({
+        first_name,
+        last_name,
+        email,
+      });
+
+      cb(null, responseHandler(200, user));
+    } catch (error) {
+      cb(null, errorHandler(400, error));
+    }
   },
 };
