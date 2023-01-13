@@ -1,5 +1,5 @@
 locals {
-  output_values = templatefile("${path.module}/templates/${env}/common-output.tftpl", {
+  output_values = templatefile("${path.module}/templates/common-output.tftpl", {
     env                           = var.env
     cognito_user_pool_id          = aws_cognito_user_pool.home-chef-user-pool.id
     cognito_user_pool_client_id   = aws_cognito_user_pool_client.home-chef-user-pool-client.id
