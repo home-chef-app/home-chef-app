@@ -11,9 +11,17 @@ Users.sync();
 module.exports = {
   // GET /users
   async index(e, ctx, cb) {
-    console.log("E", e);
+    // console.log("E", e);
     try {
       const users = await Users.findAll();
+      // const users = [
+      //   {
+      //     id: "123",
+      //     email: "email",
+      //     first_name: "Cormac",
+      //     last_name: "Sewart",
+      //   },
+      // ];
       console.log(users);
       cb(null, responseHandler(200, users));
     } catch (error) {
