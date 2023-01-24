@@ -1,9 +1,0 @@
-{
-  "dev": {
-    "username": "",
-    "password": "",
-    "host": "home-chef-dev.cns7xbkyh0nk.us-east-1.rds.amazonaws.com",
-    "database": "homechef",
-    "dialect": "mysql"
-  }
-}

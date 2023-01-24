@@ -15,16 +15,20 @@ module.exports = {
       last_name: {
         type: Sequelize.STRING,
       },
-      email: {
+      phone: {
         type: Sequelize.STRING,
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE,
+      },
+      cognito_sub: {
+        allowNull: false,
+        type: Sequelize.STRING(50),
       },
     });
   },

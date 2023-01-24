@@ -19,6 +19,7 @@
     "serverless-sequelize-migrations": "^1.1.1"
   },
   "dependencies": {
+    "amazon-cognito-identity-js": "^6.1.2",
     "fs": "0.0.1-security",
     "js-yaml": "^4.1.0",
     "mysql2": "^1.7.0",

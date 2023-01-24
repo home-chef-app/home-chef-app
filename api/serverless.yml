@@ -1,27 +1,29 @@
 service: home-chef-api-v1
 
 custom:
-  secrets: ${file(./config/dev/vars.yml)}
+  vars: ${file(./config/dev/vars.yml)}
 
 provider:
   name: aws
   runtime: nodejs14.x
   timeout: 30
-  stage: ${self:custom.secrets.env}
+  stage: ${self:custom.vars.env}
   version: ${opt:version, 'v1'}
   environment:
-    NODE_ENV: ${self:custom.secrets.env}
-    DB_NAME: ${self:custom.secrets.parameters.db_name}
+    NODE_ENV: ${self:custom.vars.env}
+    DB_NAME: ${self:custom.vars.parameters.db_name}
     DB_USERNAME: ${ssm:/home-chef/dev/db-username}
     DB_PASSWORD: ${ssm:/home-chef/dev/db-password}
-    DB_HOST: ${self:custom.secrets.parameters.db_host}
+    DB_HOST: ${self:custom.vars.parameters.db_host}
+    COGNITO_USER_POOL: ${self:custom.vars.cognito.cognito_user_pool_id}
+    COGNITO_USER_POOL_CLIENT: ${self:custom.vars.cognito.cognito_user_pool_client_id}
 
   vpc:
     securityGroupIds:
-      - ${self:custom.secrets.vpc.vpc_id}
+      - ${self:custom.vars.vpc.vpc_id}
     subnetIds:
-      - ${self:custom.secrets.vpc.private_1_id}
-      - ${self:custom.secrets.vpc.private_2_id}
+      - ${self:custom.vars.vpc.private_1_id}
+      - ${self:custom.vars.vpc.private_2_id}
 
 functions:
   listUsers:
@@ -36,6 +38,20 @@ functions:
     events:
       - http:
           path: /${self:provider.version}/users
+          method: post
+          cors: true
+  fetchUser:
+    handler: handlers/${self:provider.version}/index.fetchOne
+    events:
+      - http:
+          path: /${self:provider.version}/users/{sub}
+          method: get
+          cors: true
+  signIn:
+    handler: handlers/${self:provider.version}/index.signIn
+    events:
+      - http:
+          path: /${self:provider.version}/signin
           method: post
           cors: true
 

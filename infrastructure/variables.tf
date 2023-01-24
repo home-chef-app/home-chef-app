@@ -10,6 +10,7 @@ variable "env" {
   default     = "dev"
 }
 
+
 variable "aws_region" {
   description = "AWS Region"
   type        = string
@@ -19,4 +20,5 @@ variable "aws_region" {
 variable "resource_prefix" {
   description = "Prefix prepended to resource names"
   type        = string
+  default     = "home-chef"
 }

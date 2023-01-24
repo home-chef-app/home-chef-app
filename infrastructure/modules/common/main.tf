@@ -1,8 +1,8 @@
 locals {
   output_values = templatefile("${path.module}/templates/common-output.tftpl", {
     env                           = var.env
-    cognito_user_pool_id          = aws_cognito_user_pool.home-chef-user-pool.id
-    cognito_user_pool_client_id   = aws_cognito_user_pool_client.home-chef-user-pool-client.id
+    cognito_user_pool_id          = aws_cognito_user_pool.home_chef_user_pool.id
+    cognito_user_pool_client_id   = aws_cognito_user_pool_client.home_chef_user_pool_client.id
     vpc_id                        = aws_vpc.home-chef-vpc.id
     lambda_security_group         = aws_security_group.lambda-sg.id
     public_1_id                   = aws_subnet.home-chef-public-subnet-1.id

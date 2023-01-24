@@ -1,16 +1,16 @@
 env: dev
 
 cognito:
-  cognito_user_pool_id: us-east-1_GsuTiZhXK
-  cognito_user_pool_client_id: 7fmsc32ep5tqortntuao8ppd5p
+  cognito_user_pool_id: us-east-1_1bspa6Wsu
+  cognito_user_pool_client_id: 3pmnaidt4j9m16j6q90tkd8u0s
 
 vpc:
-  vpc_id: vpc-07f70a395b4fa3e40
-  lambda_security_group: sg-07a9292f8c2c56be5
-  public_1_id: subnet-0d09716cb2649b4c3
-  public_2_id: subnet-05579672b9433b0bd
-  private_1_id: subnet-0571e8498a90f1a5e
-  private_2_id: subnet-0ab663ce7c7efe343
+  vpc_id: vpc-02f095d0f227d189d
+  lambda_security_group: sg-083c912971637ce4e
+  public_1_id: subnet-05b8c72980911958b
+  public_2_id: subnet-06b9c3eb6519cd18c
+  private_1_id: subnet-01e08da753e0ea9d3
+  private_2_id: subnet-0723cb873b3e183a8
 
 parameters:
   db_username_ssm_parameter_arn: /home-chef/dev/db-username
