@@ -3,6 +3,10 @@ terraform {
 
   backend "s3" {
     profile="home-chef"
+    bucket = "home-chef-app-terraform"
+    key = "env/dev/terraform.tfstate"
+    region = "us-east-1"
+    profile = "home-chef"
   }
 
   required_providers {
