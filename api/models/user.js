@@ -30,17 +30,20 @@ module.exports = (sequelize, { DataTypes }) => {
         },
       },
     },
-    email: {
+    phone: {
       type: DataTypes.STRING,
+    },
+    createdAt: {
+      field: "created_at",
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      field: "updated_at",
+      type: DataTypes.DATE,
+    },
+    cognito_sub: {
       allowNull: false,
-      validate: {
-        notNull: {
-          msg: "Cannot be null.",
-        },
-        notEmpty: {
-          msg: "Cannot be empty.",
-        },
-      },
+      type: DataTypes.STRING(50),
     },
   });
 };

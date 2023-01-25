@@ -51,7 +51,7 @@ functions:
     handler: handlers/${self:provider.version}/index.signIn
     events:
       - http:
-          path: /${self:provider.version}/signin
+          path: /${self:provider.version}/users/signin
           method: post
           cors: true
 

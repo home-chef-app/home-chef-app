@@ -99,16 +99,17 @@ module.exports = {
       const signInResult = await signInRequest(authenticationDetails);
       const sub = signInResult.idToken.payload.sub;
       console.log("Sub", sub);
-      // DB Call
-      // const user = await Users.findAll({
-      //   where: {
-      //     cognito_sub: "7d781aa6-a11f-4f77-b58e-42f92c3efbdb",
-      //   },
-      // });
-      cb(null, responseHandler(200, { ...signInResult }));
+
+      const user = await Users.findAll({
+        where: {
+          cognito_sub: "7d781aa6-a11f-4f77-b58e-42f92c3efbdb",
+        },
+      });
+
+      cb(null, responseHandler(200, { ...user[0].dataValues, ...signInResult }));
     } catch (error) {
       console.log(error);
-      cb(null, errorHandler(400, error));
+      cb(null, errorHandler(500, error));
     }
   },
 };
