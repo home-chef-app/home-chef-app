@@ -11,42 +11,15 @@ Users.sync();
 module.exports = {
   // GET /users
   async index(e, ctx, cb) {
-    // console.log("E", e);
     try {
       const users = await Users.findAll();
-      // const users = [
-      //   {
-      //     id: "123",
-      //     email: "email",
-      //     first_name: "Cormac",
-      //     last_name: "Sewart",
-      //   },
-      // ];
-      console.log(users);
       cb(null, responseHandler(200, users));
     } catch (error) {
       cb(null, errorHandler(400, error));
     }
   },
 
-  // POST /users
-  async create(e, ctx, cb) {
-    const { first_name, last_name, email } = JSON.parse(e.body);
-
-    try {
-      const user = await Users.create({
-        first_name,
-        last_name,
-        email,
-      });
-
-      cb(null, responseHandler(200, user));
-    } catch (error) {
-      cb(null, errorHandler(400, error));
-    }
-  },
-
-  // POST /users/{sub}
+  // GET /users/{sub}
   async fetchOne(e, ctx, cb) {
     console.log(e);
     const { sub } = JSON.parse(e.pathParameters);
@@ -106,9 +79,161 @@ module.exports = {
         },
       });
 
-      cb(null, responseHandler(200, { ...user[0].dataValues, ...signInResult }));
+      cb(
+        null,
+        responseHandler(200, { ...user[0].dataValues, ...signInResult })
+      );
     } catch (error) {
       console.log(error);
+      cb(null, errorHandler(500, error));
+    }
+  },
+
+  // POST /users/signin
+  async signUp(e, ctx, cb) {
+    const { phone, password } = JSON.parse(e.body);
+
+    try {
+      const userPool = new AmazonCognitoIdentity.CognitoUserPool({
+        UserPoolId: process.env.COGNITO_USER_POOL,
+        ClientId: process.env.COGNITO_USER_POOL_CLIENT,
+      });
+      var userData = {
+        Username: phone,
+        Pool: userPool,
+      };
+
+      cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+      let userAttributes = [];
+      var dataPhoneNumber = {
+        Name: "phone_number",
+        Value: "+15062820763",
+      };
+      var attributePhoneNumber = new AmazonCognitoIdentity.CognitoUserAttribute(
+        dataPhoneNumber
+      );
+
+      userAttributes.push(attributePhoneNumber);
+
+      userPool.signUp(
+        "+15062820763",
+        password,
+        userAttributes,
+        null,
+
+        function (err, result) {
+          if (err) {
+            console.log(err);
+            return;
+          }
+          var cognitoUser = result.user;
+          console.log(
+            "user name is " + cognitoUser.getUserData((r) => console.log(r))
+          );
+        }
+      );
+
+      /*   const user = await Users.create({
+        first_name,
+        last_name,
+        phone,
+        cognito_sub,
+      }); */
+
+      cb(null, responseHandler(200, { test: "Test" }));
+    } catch (error) {
+      console.log("ERROR", error);
+      cb(null, errorHandler(500, error));
+    }
+  },
+
+  // POST /users/signin
+  async confirmSignup(e, ctx, cb) {
+    const { first_name, last_name, phone, password, code } = JSON.parse(e.body);
+
+    try {
+      const userPool = new AmazonCognitoIdentity.CognitoUserPool({
+        UserPoolId: process.env.COGNITO_USER_POOL,
+        ClientId: process.env.COGNITO_USER_POOL_CLIENT,
+      });
+      const cognitoUser = new AmazonCognitoIdentity.CognitoUser({
+        Username: phone,
+        Pool: userPool,
+      });
+
+      function confirm() {
+        return new Promise(function (resolve, reject) {
+          cognitoUser.confirmRegistration(code, true, function (err, result) {
+            if (err) {
+              reject(err);
+              return;
+            }
+            resolve(result);
+          });
+        });
+      }
+      const result = await confirm();
+
+      var authenticationDetails =
+        new AmazonCognitoIdentity.AuthenticationDetails({
+          Username: phone,
+          Password: password,
+        });
+      function signInRequest(authDetails) {
+        return new Promise(function (resolve, reject) {
+          cognitoUser.authenticateUser(authDetails, {
+            onSuccess: resolve,
+            onFailure: reject,
+          });
+        });
+      }
+      const signInResult = await signInRequest(authenticationDetails);
+
+      const sub = signInResult.idToken.payload.sub;
+      const user = await Users.create({
+        first_name,
+        last_name,
+        phone,
+        cognito_sub: sub,
+      });
+      console.log(user.dataValues);
+      cb(null, responseHandler(200, { ...user.dataValues, ...signInResult }));
+    } catch (error) {
+      console.log("ERROR", error);
+      cb(null, errorHandler(500, error));
+    }
+  },
+
+  // POST /users/signin
+  async resendCode(e, ctx, cb) {
+    const { phone } = JSON.parse(e.body);
+    try {
+      const userPool = new AmazonCognitoIdentity.CognitoUserPool({
+        UserPoolId: process.env.COGNITO_USER_POOL,
+        ClientId: process.env.COGNITO_USER_POOL_CLIENT,
+      });
+      var userData = {
+        Username: phone,
+        Pool: userPool,
+      };
+
+      cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+      function resend() {
+        return new Promise(function (resolve, reject) {
+          cognitoUser.resendConfirmationCode(function (err, result) {
+            if (err) {
+              reject(err);
+              return;
+            }
+            resolve(result);
+          });
+        });
+      }
+      const result = await resend();
+
+      cb(null, responseHandler(200, { result: result }));
+    } catch (error) {
+      console.log("ERROR", error);
       cb(null, errorHandler(500, error));
     }
   },

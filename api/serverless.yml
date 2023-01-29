@@ -33,13 +33,6 @@ functions:
           path: /${self:provider.version}/users
           method: get
           cors: true
-  createUser:
-    handler: handlers/${self:provider.version}/index.createUser
-    events:
-      - http:
-          path: /${self:provider.version}/users
-          method: post
-          cors: true
   fetchUser:
     handler: handlers/${self:provider.version}/index.fetchOne
     events:
@@ -52,6 +45,27 @@ functions:
     events:
       - http:
           path: /${self:provider.version}/users/signin
+          method: post
+          cors: true
+  signUp:
+    handler: handlers/${self:provider.version}/index.signUp
+    events:
+      - http:
+          path: /${self:provider.version}/users/signup
+          method: post
+          cors: true
+  confirm:
+    handler: handlers/${self:provider.version}/index.confirm
+    events:
+      - http:
+          path: /${self:provider.version}/users/confirm
+          method: post
+          cors: true
+  resend:
+    handler: handlers/${self:provider.version}/index.resend
+    events:
+      - http:
+          path: /${self:provider.version}/users/resend
           method: post
           cors: true
 
