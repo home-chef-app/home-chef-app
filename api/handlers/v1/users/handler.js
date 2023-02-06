@@ -107,7 +107,7 @@ module.exports = {
       let userAttributes = [];
       var dataPhoneNumber = {
         Name: "phone_number",
-        Value: "+15062820763",
+        Value: phone,
       };
       var attributePhoneNumber = new AmazonCognitoIdentity.CognitoUserAttribute(
         dataPhoneNumber
@@ -115,8 +115,10 @@ module.exports = {
 
       userAttributes.push(attributePhoneNumber);
 
+      console.log(userAttributes);
+
       userPool.signUp(
-        "+15062820763",
+        phone,
         password,
         userAttributes,
         null,
