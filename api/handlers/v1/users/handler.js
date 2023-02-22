@@ -70,19 +70,22 @@ module.exports = {
         });
       }
       const signInResult = await signInRequest(authenticationDetails);
+      console.log(signInResult);
       const sub = signInResult.idToken.payload.sub;
       console.log("Sub", sub);
 
-      const user = await Users.findAll({
+      const user = await Users.findOne({
         where: {
-          cognito_sub: "7d781aa6-a11f-4f77-b58e-42f92c3efbdb",
+          cognito_sub: sub,
         },
       });
 
-      cb(
-        null,
-        responseHandler(200, { ...user[0].dataValues, ...signInResult })
-      );
+      if (!user) {
+        cb(null, responseHandler(404, { message: "User not found" }));
+        return;
+      }
+
+      cb(null, responseHandler(200, { ...user.dataValues, ...signInResult }));
     } catch (error) {
       console.log(error);
       cb(null, errorHandler(500, error));
@@ -234,6 +237,45 @@ module.exports = {
       const result = await resend();
 
       cb(null, responseHandler(200, { result: result }));
+    } catch (error) {
+      console.log("ERROR", error);
+      cb(null, errorHandler(500, error));
+    }
+  },
+
+  // PUT /users/refreshToken
+  async refreshIdToken(e, ctx, cb) {
+    const { phone, refreshToken } = JSON.parse(e.body);
+
+    try {
+      const userPool = new AmazonCognitoIdentity.CognitoUserPool({
+        UserPoolId: process.env.COGNITO_USER_POOL,
+        ClientId: process.env.COGNITO_USER_POOL_CLIENT,
+      });
+      var userData = {
+        Username: phone,
+        Pool: userPool,
+      };
+      const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+      const token = new AmazonCognitoIdentity.CognitoRefreshToken({
+        RefreshToken: refreshToken,
+      });
+
+      function refresh() {
+        return new Promise(function (resolve, reject) {
+          cognitoUser.refreshSession(token, (err, session) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(session);
+            }
+          });
+        });
+      }
+      const {
+        accessToken: { jwtToken },
+      } = await refresh();
+      cb(null, responseHandler(200, { result: jwtToken }));
     } catch (error) {
       console.log("ERROR", error);
       cb(null, errorHandler(500, error));

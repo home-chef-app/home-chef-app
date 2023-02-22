@@ -68,6 +68,13 @@ functions:
           path: /${self:provider.version}/users/resend
           method: post
           cors: true
+  refreshIdToken:
+    handler: handlers/${self:provider.version}/index.refreshIdToken
+    events:
+      - http:
+          path: /${self:provider.version}/users/refreshIdToken
+          method: put
+          cors: true
 
 plugins:
   - serverless-offline

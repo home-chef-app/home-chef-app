@@ -7,4 +7,5 @@ module.exports = {
   signUp: users.signUp,
   confirm: users.confirmSignup,
   resend: users.resendCode,
+  refreshIdToken: users.refreshIdToken,
 };
