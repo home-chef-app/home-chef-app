@@ -8,7 +8,8 @@
     "deploy-dev-v1": "serverless deploy --stage dev --version v1",
     "deploy-qa-v1": "serverless deploy --stage qa --version v1",
     "deploy-stage-v1": "serverless deploy --stage stage --version v1",
-    "deploy-prod-v1": "serverless deploy --stage prod --version v1"
+    "deploy-prod-v1": "serverless deploy --stage prod --version v1",
+    "v": "node -v"
   },
   "keywords": [],
   "author": "Adnan Rahić",
@@ -24,6 +25,7 @@
     "fs": "0.0.1-security",
     "js-yaml": "^4.1.0",
     "mysql2": "^1.7.0",
+    "node": "14.13.0",
     "os": "^0.1.2",
     "sequelize": "^6.5.0",
     "serverless-mysql": "^1.5.4"
