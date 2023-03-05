@@ -75,6 +75,13 @@ functions:
           path: /${self:provider.version}/users/refreshIdToken
           method: put
           cors: true
+  tokenTest:
+    handler: handlers/${self:provider.version}/index.tokenTest
+    events:
+      - http:
+          path: /${self:provider.version}/tokenTest
+          method: get
+          cors: true
 
 plugins:
   - serverless-offline

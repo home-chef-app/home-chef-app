@@ -7,6 +7,7 @@ const {
 var AmazonCognitoIdentity = require("amazon-cognito-identity-js");
 const Users = require("../../../models/user")(sequelize, Sequelize);
 Users.sync();
+const { verifyJwtToken } = require("../../../helpers/cognitoJwtVerifier");
 
 module.exports = {
   // GET /users
@@ -279,6 +280,24 @@ module.exports = {
     } catch (error) {
       console.log("ERROR", error);
       cb(null, errorHandler(500, error));
+    }
+  },
+
+  async tokenTest(e, ctx, cb) {
+    try {
+      const token = e.headers.authorization.replace("Bearer ", "");
+      console.log(token);
+      const validToken = await verifyJwtToken(token);
+      console.log(validToken);
+      if (!validToken) {
+        console.log("invalid token");
+        cb(null, responseHandler(403, { message: "Unauthorized" }));
+        return;
+      }
+      console.log("valid token");
+      cb(null, responseHandler(200, { message: "success" }));
+    } catch (error) {
+      cb(null, errorHandler(400, error));
     }
   },
 };

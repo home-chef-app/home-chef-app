@@ -8,4 +8,5 @@ module.exports = {
   confirm: users.confirmSignup,
   resend: users.resendCode,
   refreshIdToken: users.refreshIdToken,
+  tokenTest: users.tokenTest,
 };
