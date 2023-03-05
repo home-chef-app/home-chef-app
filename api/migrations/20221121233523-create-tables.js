@@ -31,8 +31,34 @@ module.exports = {
         type: Sequelize.STRING(50),
       },
     });
+    await queryInterface.createTable("sellers", {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
+      },
+      name: {
+        type: Sequelize.STRING,
+      },
+      description: {
+        type: Sequelize.TEXT,
+      },
+      location: {
+        type: Sequelize.GEOMETRY,
+      },
+      created_at: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      updated_at: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+    });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable("users");
+    await queryInterface.dropTable("sellers");
   },
 };
