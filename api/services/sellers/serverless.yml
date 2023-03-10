@@ -1,0 +1,44 @@
+service: home-chef-api-v1-sellers
+
+custom:
+  vars: ${file(../../config/dev/vars.yml)}
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  timeout: 30
+  stage: ${self:custom.vars.env}
+  version: ${opt:version, 'v1'}
+   iamRoleStatements:
+    - Effect: "Allow"
+      Action: 
+        - "ssm:GetParameters"
+      Resource: "*"
+  environment:
+    NODE_ENV: ${self:custom.vars.env}
+    DB_NAME: ${self:custom.vars.parameters.db_name}
+    DB_USERNAME: ${ssm:/home-chef/dev/db-username}
+    DB_PASSWORD: ${ssm:/home-chef/dev/db-password}
+    DB_HOST: ${self:custom.vars.parameters.db_host}
+    COGNITO_USER_POOL: ${self:custom.vars.cognito.cognito_user_pool_id}
+    COGNITO_USER_POOL_CLIENT: ${self:custom.vars.cognito.cognito_user_pool_client_id}
+
+  vpc:
+    securityGroupIds:
+      - ${self:custom.vars.vpc.vpc_id}
+    subnetIds:
+      - ${self:custom.vars.vpc.private_1_id}
+      - ${self:custom.vars.vpc.private_2_id}
+
+functions:
+  listSellers:
+    handler: handlers/${self:provider.version}/index.listSellers
+    events:
+      - http:
+          path: /${self:provider.version}/sellers
+          method: get
+          cors: true
+
+plugins:
+  - serverless-offline
+  

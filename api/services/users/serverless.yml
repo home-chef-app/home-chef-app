@@ -1,7 +1,7 @@
-service: home-chef-api-v1
+service: home-chef-api-v1-users
 
 custom:
-  vars: ${file(./config/dev/vars.yml)}
+  vars: ${file(../../config/dev/vars.yml)}
 
 provider:
   name: aws
@@ -78,3 +78,4 @@ functions:
 
 plugins:
   - serverless-offline
+  

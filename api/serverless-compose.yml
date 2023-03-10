@@ -1,0 +1,5 @@
+services:
+  users:
+    path: services/users
+  sellers:
+    path: services/sellers
