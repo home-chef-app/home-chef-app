@@ -75,6 +75,13 @@ functions:
           path: /${self:provider.version}/users/refreshIdToken
           method: put
           cors: true
+  listSellers:
+    handler: handlers/${self:provider.version}/index.listSellers
+    events:
+      - http:
+          path: /${self:provider.version}/sellers
+          method: get
+          cors: true
   tokenTest:
     handler: handlers/${self:provider.version}/index.tokenTest
     events:

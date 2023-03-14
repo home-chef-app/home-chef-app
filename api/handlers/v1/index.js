@@ -1,4 +1,5 @@
 const users = require("./users/handler");
+const sellers = require("./sellers/handler");
 
 module.exports = {
   listUsers: users.index,
@@ -9,4 +10,6 @@ module.exports = {
   resend: users.resendCode,
   refreshIdToken: users.refreshIdToken,
   tokenTest: users.tokenTest,
+  //Sellers
+  listSellers: sellers.index,
 };
