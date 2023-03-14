@@ -286,9 +286,7 @@ module.exports = {
   async tokenTest(e, ctx, cb) {
     try {
       const token = e.headers.authorization.replace("Bearer ", "");
-      console.log(token);
       const validToken = await verifyJwtToken(token);
-      console.log(validToken);
       if (!validToken) {
         console.log("invalid token");
         cb(null, responseHandler(403, { message: "Unauthorized" }));

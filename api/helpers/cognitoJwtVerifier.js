@@ -9,7 +9,6 @@ module.exports = {
   verifyJwtToken: async (token) => {
     try {
       const payload = await verifier.verify(token);
-      console.log("Token is valid", payload);
       return true;
     } catch {
       return false;
