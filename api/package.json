@@ -20,6 +20,7 @@
     "serverless-sequelize-migrations": "^1.1.1"
   },
   "dependencies": {
+    "@opensearch-project/opensearch": "^2.2.0",
     "amazon-cognito-identity-js": "^6.1.2",
     "aws-jwt-verify": "^3.4.0",
     "fs": "0.0.1-security",

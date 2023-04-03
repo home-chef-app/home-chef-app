@@ -1,8 +1,8 @@
 env: dev
 
 cognito:
-  cognito_user_pool_id: us-east-1_1bspa6Wsu
-  cognito_user_pool_client_id: 3pmnaidt4j9m16j6q90tkd8u0s
+  cognito_user_pool_id: us-east-1_NPkEWApKK
+  cognito_user_pool_client_id: d60f1vmjvj3f6t5d2dd13qcp
 
 vpc:
   vpc_id: vpc-02f095d0f227d189d
@@ -15,5 +15,7 @@ vpc:
 parameters:
   db_username_ssm_parameter_arn: /home-chef/dev/db-username
   db_password_ssm_parameter_arn: /home-chef/dev/db-password
+  es_username_ssm_parameter_arn: /home-chef/dev/es-username
+  es_password_ssm_parameter_arn: /home-chef/dev/es-password
   db_host: home-chef-dev.cns7xbkyh0nk.us-east-1.rds.amazonaws.com
   db_name: homechef

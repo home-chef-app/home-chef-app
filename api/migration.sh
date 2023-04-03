@@ -54,20 +54,20 @@ function init_funcs(){
     }
 
     # Apply all migrations
-    declare function migrate(){
+    function migrate(){
         initMigration
         npx sequelize db:migrate --config ./temp.json --env $env
         cleanMigration
     }
 
     # Undo previous migration
-    declare function migrate-undo(){
+    function migrate-undo(){
         initMigration
         npx sequelize-cli db:migrate:undo --config ./temp.json --env $env
         cleanMigration
     }
     # Revert back to the initial state by undoing all migrations
-    declare function migrate-undo-all(){
+    function migrate-undo-all(){
         initMigration
         npx sequelize-cli db:migrate:undo:all --config ./temp.json --env $env
         cleanMigration

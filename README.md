@@ -8,6 +8,17 @@
 - gpg (mac: `brew install gng`)
 - yq (mac: `brew install yq`)
 
+### Starting The Development Container
+A docker image has been created for easy cross platform development and script execution.
+
+Create Image
+`docker build . -t home-chef-dev`
+
+Mount to Directory 
+`. ./start_container.sh`
+
+Run all scripts from within the image
+
 ### Prerequisites
 
 - Store AWS Creds for the home-chef account into an AWS Profile names `home-chef	`

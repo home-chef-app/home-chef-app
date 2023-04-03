@@ -12,11 +12,16 @@ provider:
   environment:
     NODE_ENV: ${self:custom.vars.env}
     DB_NAME: ${self:custom.vars.parameters.db_name}
-    DB_USERNAME: ${ssm:/home-chef/dev/db-username}
-    DB_PASSWORD: ${ssm:/home-chef/dev/db-password}
+    # #Parameterize from custom.vars.parameters
+    # DB_USERNAME: ${ssm:/home-chef/dev/db-username}
+    # DB_PASSWORD: ${ssm:/home-chef/dev/db-password}
+    DB_USERNAME: ${ssm:${self:custom.vars.parameters.db_username_ssm_parameter_arn}}
+    DB_PASSWORD: ${ssm:${self:custom.vars.parameters.db_password_ssm_parameter_arn}}
     DB_HOST: ${self:custom.vars.parameters.db_host}
     COGNITO_USER_POOL: ${self:custom.vars.cognito.cognito_user_pool_id}
     COGNITO_USER_POOL_CLIENT: ${self:custom.vars.cognito.cognito_user_pool_client_id}
+    ES_USERNAME: ${ssm:${self:custom.vars.parameters.es_username_ssm_parameter_arn}}
+    ES_PASSWORD: ${ssm:${self:custom.vars.parameters.es_password_ssm_parameter_arn}}
 
   vpc:
     securityGroupIds:
@@ -80,6 +85,13 @@ functions:
     events:
       - http:
           path: /${self:provider.version}/sellers
+          method: get
+          cors: true
+  searchSellers:
+    handler: handlers/${self:provider.version}/index.searchSellers
+    events:
+      - http:
+          path: /${self:provider.version}/search/{query}
           method: get
           cors: true
   tokenTest:

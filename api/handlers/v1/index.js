@@ -12,4 +12,5 @@ module.exports = {
   tokenTest: users.tokenTest,
   //Sellers
   listSellers: sellers.index,
+  searchSellers: sellers.search,
 };

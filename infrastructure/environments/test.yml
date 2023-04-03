@@ -1,0 +1,6 @@
+database_creds:
+    db_username: homechefadmin
+    db_password: H0mechef!
+es:
+    master_user_name: home-chef-admin
+    master_user_password: H0mechef!

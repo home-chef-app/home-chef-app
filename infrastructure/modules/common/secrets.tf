@@ -11,7 +11,7 @@ resource "aws_ssm_parameter" "db-username" {
   }
 }
 
-data "aws_arn" "db-username-arn" {
+data "aws_arn" "db_username_arn" {
   arn = aws_ssm_parameter.db-username.arn
 }
 
@@ -26,8 +26,37 @@ resource "aws_ssm_parameter" "db-password" {
   }
 }
 
-data "aws_arn" "db-password-arn" {
+data "aws_arn" "db_password_arn" {
   arn = aws_ssm_parameter.db-password.arn
+}
+
+resource "aws_ssm_parameter" "es_master_username" {
+  name        = "/${var.resource_prefix}/${var.env}/es-username"
+  description = "The parameter description"
+  type        = "SecureString"
+  value       = data.sops_file.secrets.data["es.master_user_name"]
+
+  tags = {
+    environment = "${var.env}"
+  }
+}
+
+data "aws_arn" "es_master_username_arn" {
+  arn = aws_ssm_parameter.es_master_username.arn
+}
+resource "aws_ssm_parameter" "es_master_password" {
+  name        = "/${var.resource_prefix}/${var.env}/es-password"
+  description = "The parameter description"
+  type        = "SecureString"
+  value       = data.sops_file.secrets.data["es.master_user_password"]
+
+  tags = {
+    environment = "${var.env}"
+  }
+}
+
+data "aws_arn" "es_master_password_arn" {
+  arn = aws_ssm_parameter.es_master_password.arn
 }
 
 

@@ -37,8 +37,9 @@ function init(){
     aws_access_key=$(aws configure get home-chef.aws_access_key_id)
     aws_secret_access_key=`aws configure get home-chef.aws_secret_access_key`
     region=$(aws configure get home-chef.region)
-    #export AWS_ACCESS_KEY_ID="$aws_access_key"
-    #export AWS_SECRET_ACCESS_KEY="$aws_secret_access_key"
+    export AWS_ACCESS_KEY_ID="$aws_access_key"
+    export AWS_SECRET_ACCESS_KEY="$aws_secret_access_key"
+    echo $AWS_ACCESS_KEY_ID
     export AWS_REGION="us-east-1"
     export TERRAFORM_BUCKET="home-chef-app-terraform"
     echo $region
@@ -47,27 +48,27 @@ function init(){
     echo $TERRAFORM_BUCKET
     echo $tf_state_key
     echo $AWS_REGION
-    echo "test1"
+    
     terraform init -backend-config="bucket=${TERRAFORM_BUCKET}" -backend-config="key=${tf_state_key}" -backend-config="region=${AWS_REGION}"
-    echo "test"
+    
     printf "\n***********************************************************************************\n\n"
     printf "To deploy the terraform stack to the environment $env, run terraform-deploy"
     printf "\n\n***********************************************************************************\n"
 
     # Programtically provide required params to commands
-    declare function terraform-state(){
+    function terraform-state(){
         command terraform state "$@" 
     }
 
-    declare function terraform-deploy(){
+    function terraform-deploy(){
         command terraform apply --var-file="./global.tfvars" --var-file="./environments/${env}.tfvars"
     }
 
-    declare function terraform-plan(){
+    function terraform-plan(){
         command terraform plan "$@" --var-file="./global.tfvars" --var-file="./environments/${env}.tfvars"
     }
 
-    declare function terraform-destroy(){
+    function terraform-destroy(){
         command terraform destroy --var-file="./global.tfvars" --var-file="./environments/${env}.tfvars"
     }
 }

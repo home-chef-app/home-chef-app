@@ -9,8 +9,10 @@ locals {
     public_2_id                   = aws_subnet.home-chef-public-subnet-2.id
     private_1_id                  = aws_subnet.home-chef-private-subnet-1.id
     private_2_id                  = aws_subnet.home-chef-private-subnet-2.id
-    db_username_ssm_parameter_arn = substr(data.aws_arn.db-username-arn.resource, 9, length(data.aws_arn.db-username-arn.resource))
-    db_password_ssm_parameter_arn = substr(data.aws_arn.db-password-arn.resource, 9, length(data.aws_arn.db-password-arn.resource))
+    db_username_ssm_parameter_arn = substr(data.aws_arn.db_username_arn.resource, 9, length(data.aws_arn.db_username_arn.resource))
+    db_password_ssm_parameter_arn = substr(data.aws_arn.db_password_arn.resource, 9, length(data.aws_arn.db_password_arn.resource))
+    es_username_ssm_parameter_arn = substr(data.aws_arn.es_master_username_arn.resource, 9, length(data.aws_arn.es_master_username_arn.resource))
+    es_password_ssm_parameter_arn = substr(data.aws_arn.es_master_password_arn.resource, 9, length(data.aws_arn.es_master_password_arn.resource))
     db_host                       = aws_db_instance.home-chef.address
     db_name                       = aws_db_instance.home-chef.name
   })
