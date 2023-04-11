@@ -7,7 +7,6 @@ CURR_DIR=$(pwd)
 MOUNT_DIR=${1:-"$CURR_DIR"}
 IMAGE_VERSION=${2:-latest}
 
-
 function start_container() {
     printf "Starting development container $IMAGE_NAME  with mount path $MOUNT_DIR..."
     docker container run -it --platform linux/amd64 -v $MOUNT_DIR:/src \

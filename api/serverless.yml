@@ -91,6 +91,10 @@ functions:
     handler: handlers/${self:provider.version}/index.searchSellers
     events:
       - http:
+          path: /${self:provider.version}/search
+          method: get
+          cors: true
+      - http:
           path: /${self:provider.version}/search/{query}
           method: get
           cors: true

@@ -25,29 +25,33 @@ module.exports = {
     const index = "sellers";
     const url = host + "/" + index + "/_search";
     console.log(e.pathParameters);
-    const queryValue = e.pathParameters.query;
+    const queryValue = e?.pathParameters?.query;
     try {
-      const query = {
+      let query = {
         size: 25,
         query: {
-          multi_match: {
-            query: queryValue,
-            fields: ["name", "description"],
-            fuzziness: "AUTO",
+          bool: {
+            filter: {
+              geo_distance: {
+                distance: "1000km",
+                location: {
+                  lat: 45.96,
+                  lon: -66.64,
+                },
+              },
+            },
           },
         },
       };
-      // const result = await fetch(url, {
-      //   method: "POST",
-      //   body: JSON.stringify(query),
-      //   headers: {
-      //     Accept: "application/json",
-      //     "Content-Type": "application/json",
-      //     Authorization: {
-      //       user,
-      //     },
-      //   },
-      // });
+      if (!!queryValue) {
+        query.query.bool["must"] = {
+          query_string: {
+            query: `*${queryValue.trim()}*`,
+            fields: ["name^2", "description"],
+            fuzziness: "AUTO",
+          },
+        };
+      }
       var response = await SearchClient.search({
         index: "sellers",
         body: query,
