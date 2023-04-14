@@ -20,8 +20,9 @@ module.exports = {
 
   // GET /sellers/search/{query}
   async search(e, ctx, cb) {
-    const host =
-      "https://search-home-chef-dev-jsck72zarjgrmtoypfpjtyxcqu.us-east-1.es.amazonaws.com";
+    // Commenting until I can figure out the data transfer charges
+    //const host = "https://search-home-chef-dev-jsck72zarjgrmtoypfpjtyxcqu.us-east-1.es.amazonaws.com";
+    const host = ""
     const index = "sellers";
     const url = host + "/" + index + "/_search";
     console.log(e.pathParameters);
