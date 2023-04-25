@@ -34,9 +34,47 @@ module.exports = {
     await queryInterface.sequelize.query(
       `insert into sellers(name, description, location) VALUES ("Als Avo Toast", "Fresh AAA Avos", POINT(44.645823, 63.587579))`
     );
+    await queryInterface.bulkInsert("dishes", [
+      {
+        seller_id: 1,
+        name: "Spaghetti",
+        Description: "Italian classic",
+        price: 12.49,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+    ]);
+    await queryInterface.bulkInsert("ratings", [
+      {
+        user_id: 1,
+        seller_id: 1,
+        rating: 4,
+        review: "",
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        user_id: 1,
+        seller_id: 2,
+        rating: 5,
+        review: "Amazing",
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        user_id: 2,
+        seller_id: 2,
+        rating: 3,
+        review: "Just okay",
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+    ]);
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete("users", null, {});
     await queryInterface.bulkDelete("sellers", null, {});
+    await queryInterface.bulkDelete("dishes", null, {});
+    await queryInterface.bulkDelete("ratings", null, {});
   },
 };
