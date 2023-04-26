@@ -1,11 +1,11 @@
-const sequelize = require("../../../models/database").sequelize;
-const Sequelize = require("sequelize");
 const {
   responseHandler,
   errorHandler,
 } = require("../../../helpers/httpHelper");
 var AmazonCognitoIdentity = require("amazon-cognito-identity-js");
-const Users = require("../../../models/user")(sequelize, Sequelize);
+const { models } = require("../../../models/database");
+const Users = models.user;
+//const Users = require("../../../models/user")(sequelize, Sequelize);
 Users.sync();
 const { verifyJwtToken } = require("../../../helpers/cognitoJwtVerifier");
 

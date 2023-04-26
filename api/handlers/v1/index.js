@@ -1,5 +1,7 @@
 const users = require("./users/handler");
 const sellers = require("./sellers/handler");
+// const ratings = require("./ratings/handler");
+// const dishes = require("./dishes/handler");
 
 module.exports = {
   listUsers: users.index,

@@ -1,10 +1,9 @@
-const sequelize = require("../../../models/database").sequelize;
-const Sequelize = require("sequelize");
+const { models } = require("../../../models/database");
+const Sellers = models.seller;
 const {
   responseHandler,
   errorHandler,
 } = require("../../../helpers/httpHelper");
-const Sellers = require("../../../models/seller")(sequelize, Sequelize);
 Sellers.sync();
 const SearchClient = require("../../../models/search");
 module.exports = {
@@ -22,7 +21,7 @@ module.exports = {
   async search(e, ctx, cb) {
     // Commenting until I can figure out the data transfer charges
     //const host = "https://search-home-chef-dev-jsck72zarjgrmtoypfpjtyxcqu.us-east-1.es.amazonaws.com";
-    const host = ""
+    const host = "";
     const index = "sellers";
     const url = host + "/" + index + "/_search";
     console.log(e.pathParameters);

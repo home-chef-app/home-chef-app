@@ -29,10 +29,10 @@ module.exports = {
       },
     ]);
     await queryInterface.sequelize.query(
-      `insert into sellers(name, description, location) VALUES ("Bobs Burgers", "Fresh AAA BEEF", POINT(45.521984, 73.591234))`
+      `insert into sellers(name, description, location) VALUES ("Bobs Burgers", "Fresh AAA BEEF", POINT(45.521984, -73.591234))`
     );
     await queryInterface.sequelize.query(
-      `insert into sellers(name, description, location) VALUES ("Als Avo Toast", "Fresh AAA Avos", POINT(44.645823, 63.587579))`
+      `insert into sellers(name, description, location) VALUES ("Als Avo Toast", "Fresh AAA Avos", POINT(44.645823, -63.587579))`
     );
     await queryInterface.bulkInsert("dishes", [
       {
@@ -72,9 +72,9 @@ module.exports = {
     ]);
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete("users", null, {});
-    await queryInterface.bulkDelete("sellers", null, {});
     await queryInterface.bulkDelete("dishes", null, {});
     await queryInterface.bulkDelete("ratings", null, {});
+    await queryInterface.bulkDelete("users", null, {});
+    await queryInterface.bulkDelete("sellers", null, {});
   },
 };

@@ -4,6 +4,7 @@
 //const path = require("path");
 const Sequelize = require("sequelize");
 const process = require("process");
+const { applyExtraSetup } = require("./extra-setup");
 //const basename = path.basename(__filename);
 //const env = process.env.NODE_ENV || "dev";
 const db = {};
@@ -48,14 +49,29 @@ const sequelize = new Sequelize(
 //     }
 //   });
 
-// //Iterate all model assocation functions
+//Iterate all model assocation functions
 // Object.keys(db).forEach((modelName) => {
 //   if (db[modelName].associate) {
 //     db[modelName].associate(db);
 //   }
 // });
 
+const modelDefiners = [
+  require("./user"),
+  require("./seller"),
+  require("./dishes"),
+  require("./ratings"),
+];
+
+// We define all models according to their files.
+for (const modelDefiner of modelDefiners) {
+  modelDefiner(sequelize);
+}
+
+// We execute any extra setup after the models are defined, such as adding associations.
+applyExtraSetup(sequelize);
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-module.exports = db;
+module.exports = sequelize;
