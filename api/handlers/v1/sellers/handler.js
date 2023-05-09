@@ -24,8 +24,13 @@ module.exports = {
     const host = "";
     const index = "sellers";
     const url = host + "/" + index + "/_search";
+
+    // @todo pass from client
+    const lat = 45.96;
+    const lon = -66.64;
     console.log(e.pathParameters);
     const queryValue = e?.pathParameters?.query;
+    const sortValue = e?.pathParameters?.sort;
     try {
       let query = {
         size: 25,
@@ -35,14 +40,16 @@ module.exports = {
               geo_distance: {
                 distance: "1000km",
                 location: {
-                  lat: 45.96,
-                  lon: -66.64,
+                  lat,
+                  lon,
                 },
               },
             },
           },
         },
       };
+
+      // If there is a string query, filter on it
       if (!!queryValue) {
         query.query.bool["must"] = {
           query_string: {
@@ -51,6 +58,43 @@ module.exports = {
             fuzziness: "AUTO",
           },
         };
+      }
+
+      //Apply the specified sorting option
+      switch (sortValue) {
+        case "mostPopular":
+          // code block
+          break;
+        case "highestRating":
+          // code block
+          break;
+        case "proximity":
+          query["sort"] = [
+            {
+              _geo_distance: {
+                location: [lat, lon],
+                order: "desc",
+                unit: "km",
+                distance_type: "arc",
+                mode: "min",
+                ignore_unmapped: true,
+              },
+            },
+          ];
+          break;
+        default:
+          query["sort"] = [
+            {
+              _geo_distance: {
+                location: [lat, lon],
+                order: "desc",
+                unit: "km",
+                distance_type: "arc",
+                mode: "min",
+                ignore_unmapped: true,
+              },
+            },
+          ];
       }
       var response = await SearchClient.search({
         index: "sellers",
